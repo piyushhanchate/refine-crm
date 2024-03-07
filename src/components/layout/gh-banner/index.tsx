@@ -17,6 +17,7 @@ export const GitHubBanner = () => {
       style={{
         width: "100%",
         height: "48px",
+
       }}
     >
       <div
@@ -134,7 +135,7 @@ const Text = () => {
   return (
     <a
       className="gh-link"
-      href="https://github.com/refinedev/refine/tree/master/examples/app-crm"
+      href="https://crm.geniex.pro/demo-request"
       target="_blank"
       rel="noreferrer"
       style={{
@@ -172,9 +173,9 @@ const Text = () => {
         >
           💡
         </span>
-        {/* <span className="text">
-          This example is open-source! Get the full source code.
-        </span> */}
+        <span className="text">
+          Need Customisation For Your Specific Business Needs? Click Here.
+        </span>
       </div>
     </a>
   );
