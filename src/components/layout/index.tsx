@@ -5,6 +5,7 @@ import { ThemedLayoutContextProvider } from "@refinedev/antd";
 import { Grid, Layout as AntdLayout } from "antd";
 
 import { GitHubBanner } from "./gh-banner";
+import { GitHubBannerMobile } from "./gh-banner/mobile";
 import { Header } from "./header";
 import { Sider } from "./sider";
 
@@ -15,6 +16,7 @@ export const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <ThemedLayoutContextProvider>
       <GitHubBanner />
+      <GitHubBannerMobile />
       <AntdLayout hasSider style={{ minHeight: "100vh" }}>
         <Sider />
         <AntdLayout>

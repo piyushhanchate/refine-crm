@@ -21,8 +21,15 @@ export const CSSRules = [
     `,
   `
     .banner {
+        display: none;
+        @media (min-width: 1100px) {
+            display: flex;
+        }
+    }`,
+    `
+    .mobile-banner {
         display: flex;
-        @media (max-width: 1100px) {
+        @media (min-width: 1100px) {
             display: none;
         }
     }`,
