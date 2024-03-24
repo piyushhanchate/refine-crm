@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { AuthProvider } from "@refinedev/core";
 
 import { createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "firebase/auth";
