@@ -1,0 +1,164 @@
+type ContactNote {
+  id: ID!
+  note: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: User!
+  updatedBy: User
+  contact: Contact!
+}
+
+# A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+scalar DateTime
+
+type DealStage {
+  id: ID!
+  title: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  dealsAggregate(
+    # Filter to find records to aggregate on
+    filter: DealAggregateFilter
+  ): [DealStageDealsAggregateResponse!]!
+  createdBy: User!
+  updatedBy: User
+  deals(
+    # Specify to filter the records returned.
+    filter: DealFilter! = { createdAt: { gt: "2023-12-01T09:38:41.740Z" } }
+
+    # Specify to sort results.
+    sorting: [DealSort!]! = []
+  ): [Deal!]!
+}
+
+type Deal {
+  id: ID!
+  title: String!
+  value: Float
+  notes: String!
+  closeDateYear: Int
+  closeDateMonth: Int
+  closeDateDay: Int
+  stageId: ID
+  dealOwnerId: ID!
+  companyId: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: User!
+  updatedBy: User
+  company: Company!
+  stage: DealStage
+  dealOwner: User!
+  dealContact: Contact!
+}
+
+type Contact {
+  id: ID!
+  name: String!
+  email: String!
+  phone: String
+  jobTitle: String
+  timezone: String
+  avatarUrl: String
+  stage: ContactStage!
+  status: ContactStatus!
+  score: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: User!
+  updatedBy: User
+  salesOwner: User!
+  company: Company!
+  deals(
+    # Limit or page results.
+    paging: OffsetPaging! = { limit: 10 }
+
+    # Specify to filter the records returned.
+    filter: DealFilter! = {}
+
+    # Specify to sort results.
+    sorting: [DealSort!]! = []
+  ): ContactDealsConnection!
+  notes(
+    # Limit or page results.
+    paging: OffsetPaging! = { limit: 10 }
+
+    # Specify to filter the records returned.
+    filter: ContactNoteFilter! = {}
+
+    # Specify to sort results.
+    sorting: [ContactNoteSort!]! = []
+  ): ContactNotesConnection!
+}
+
+type CompanyNote {
+  id: ID!
+  note: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: User!
+  updatedBy: User
+  company: Company!
+}
+
+type Company {
+  id: ID!
+  name: String!
+  avatarUrl: String
+  totalRevenue: Int
+  companySize: CompanySize
+  industry: Industry
+  businessType: BusinessType
+  country: String
+  website: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  contactsAggregate(
+    # Filter to find records to aggregate on
+    filter: ContactAggregateFilter
+  ): [CompanyContactsAggregateResponse!]!
+  notesAggregate(
+    # Filter to find records to aggregate on
+    filter: CompanyNoteAggregateFilter
+  ): [CompanyNotesAggregateResponse!]!
+  dealsAggregate(
+    # Filter to find records to aggregate on
+    filter: DealAggregateFilter
+  ): [CompanyDealsAggregateResponse!]!
+  createdBy: User!
+  updatedBy: User
+  salesOwner: User!
+  contacts(
+    # Limit or page results.
+    paging: OffsetPaging! = { limit: 50 }
+
+    # Specify to filter the records returned.
+    filter: ContactFilter! = {}
+
+    # Specify to sort results.
+    sorting: [ContactSort!]! = []
+  ): CompanyContactsConnection!
+  notes(
+    # Limit or page results.
+    paging: OffsetPaging! = { limit: 10 }
+
+    # Specify to filter the records returned.
+    filter: CompanyNoteFilter! = {}
+
+    # Specify to sort results.
+    sorting: [CompanyNoteSort!]! = []
+  ): CompanyNotesConnection!
+  deals(
+    # Limit or page results.
+    paging: OffsetPaging! = { limit: 10 }
+
+    # Specify to filter the records returned.
+    filter: DealFilter! = {}
+
+    # Specify to sort results.
+    sorting: [DealSort!]! = []
+  ): CompanyDealsConnection!
+}
+
+
+

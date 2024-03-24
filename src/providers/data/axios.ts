@@ -11,9 +11,13 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const accessToken = localStorage.getItem("access_token");
-    if (accessToken && config?.headers) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+    const userId = localStorage.getItem("userId");
+    // const accessToken = localStorage.getItem("access_token");
+    // if (accessToken && config?.headers) {
+    //   config.headers.Authorization = `Bearer ${accessToken}`;
+    // }
+    if (userId) {
+      config.headers.userId = userId;
     }
     return config;
   },

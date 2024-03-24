@@ -107,10 +107,13 @@ export const CompanyCreatePage = ({ isOverModal }: Props) => {
         layout="vertical"
         onFinish={async (values) => {
           try {
+            console.log(values, "Creating")
             const data = await onFinish({
               name: values.name,
               salesOwnerId: values.salesOwnerId,
             });
+
+            console.log(data)
 
             const createdCompany = (data as CreateResponse<Company>)?.data;
 
@@ -201,7 +204,7 @@ export const CompanyCreatePage = ({ isOverModal }: Props) => {
                 </Row>
               ))}
               <Typography.Link onClick={() => add()}>
-                <PlusCircleOutlined /> Add new contacts
+                <PlusCircleOutlined /> Add new contact
               </Typography.Link>
             </Space>
           )}

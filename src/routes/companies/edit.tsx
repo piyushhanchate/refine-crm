@@ -31,11 +31,12 @@ export const CompanyEditPage = () => {
               marginTop: 32,
             }}
           />
-          <CompanyNotes
+          {/* TODO: undo comment to enable notes */}
+          {/* <CompanyNotes
             style={{
               marginTop: 32,
             }}
-          />
+          /> */}
         </Col>
         <Col span={8}>
           <CompanyInfoForm />

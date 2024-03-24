@@ -166,147 +166,145 @@ export const SalesCreatePage: FC<PropsWithChildren> = ({ children }) => {
   const isHaveOverModal =
     pathname === "/scrumboard/sales/create/company/create";
 
-  return (
-    <>
-      <Modal
-        {...modalProps}
-        style={{ display: isHaveOverModal ? "none" : "inherit" }}
-        onCancel={() => {
-          close();
-          list("deals", "replace");
-        }}
-        title="Add new deal"
-        width={512}
-      >
-        <Form
-          {...formProps}
-          layout="vertical"
-          onFinish={async (values) => {
-            if (values.contactName && values.contactEmail) {
-              const { data } = await createMutateAsync({
-                resource: "contacts",
-                values: {
-                  name: values.contactName,
-                  email: values.contactEmail,
-                  salesOwnerId: user?.id,
-                  companyId,
-                },
-                meta: {
-                  gqlMutation: SALES_CREATE_CONTACT_MUTATION,
-                },
+  return <>
+    <Modal
+      {...modalProps}
+      style={{ display: isHaveOverModal ? "none" : "inherit" }}
+      onCancel={() => {
+        close();
+        list("deals", "replace");
+      }}
+      title="Add new deal"
+      width={512}
+    >
+      <Form
+        {...formProps}
+        layout="vertical"
+        onFinish={async (values) => {
+          if (values.contactName && values.contactEmail) {
+            const { data } = await createMutateAsync({
+              resource: "contacts",
+              values: {
+                name: values.contactName,
+                email: values.contactEmail,
+                salesOwnerId: user?.id,
+                companyId,
+              },
+              meta: {
+                gqlMutation: SALES_CREATE_CONTACT_MUTATION,
+              },
+            });
+
+            delete values.contactName;
+            delete values.contactEmail;
+
+            if (data) {
+              formProps.onFinish?.({
+                ...values,
+                dealContactId: data.id,
+                dealOwnerId: user?.id,
               });
-
-              delete values.contactName;
-              delete values.contactEmail;
-
-              if (data) {
-                formProps.onFinish?.({
-                  ...values,
-                  dealContactId: data.id,
-                  dealOwnerId: user?.id,
-                });
-              }
-            } else {
-              formProps.onFinish?.(values);
             }
-          }}
+          } else {
+            formProps.onFinish?.(values);
+          }
+        }}
+      >
+        <Form.Item
+          label="Deal title"
+          name="title"
+          rules={[{ required: true }]}
         >
-          <Form.Item
-            label="Deal title"
-            name="title"
-            rules={[{ required: true }]}
-          >
-            <Input placeholder="Please enter deal title" />
-          </Form.Item>
-          <Form.Item
-            label="Company"
-            name="companyId"
-            rules={[{ required: true }]}
-            extra={
-              <Typography.Link
-                style={{ marginTop: 8, display: "block" }}
-                onClick={() =>
-                  replace("company/create?to=/scrumboard/sales/create")
-                }
-              >
-                <PlusCircleOutlined /> Add new company
-              </Typography.Link>
+          <Input placeholder="Please enter deal title" />
+        </Form.Item>
+        <Form.Item
+          label="Company"
+          name="companyId"
+          rules={[{ required: true }]}
+          extra={
+            <Typography.Link
+              style={{ marginTop: 8, display: "block" }}
+              onClick={() =>
+                replace("company/create?to=/scrumboard/sales/create")
+              }
+            >
+              <PlusCircleOutlined /> Add new company
+            </Typography.Link>
+          }
+        >
+          <Select
+            placeholder="Please select company"
+            {...selectProps}
+            options={
+              queryResult.data?.data?.map((company) => ({
+                value: company.id,
+                label: (
+                  <SelectOptionWithAvatar
+                    name={company.name}
+                    shape="square"
+                    avatarUrl={company.avatarUrl ?? undefined}
+                  />
+                ),
+              })) ?? []
             }
-          >
-            <Select
-              placeholder="Please select company"
-              {...selectProps}
-              options={
-                queryResult.data?.data?.map((company) => ({
-                  value: company.id,
-                  label: (
-                    <SelectOptionWithAvatar
-                      name={company.name}
-                      shape="square"
-                      avatarUrl={company.avatarUrl ?? undefined}
-                    />
-                  ),
-                })) ?? []
-              }
-            />
-          </Form.Item>
+          />
+        </Form.Item>
 
-          {renderContactForm()}
-          <Row gutter={12}>
-            <Col span={12}>
-              <Form.Item label="Stage" name="stageId">
-                <Select
-                  placeholder="Please select stage"
-                  {...stageSelectProps}
-                  showSearch={false}
-                  options={stageSelectProps.options?.concat({
-                    label: "UNASSIGNED",
-                    value: null,
-                  })}
-                />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                rules={[{ required: true }]}
-                label="Deal value"
-                name="value"
-              >
-                <InputNumber
-                  min={0}
-                  addonBefore={<DollarOutlined />}
-                  placeholder="0,00"
-                  formatter={(value) =>
-                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Form.Item
-            label="Deal owner"
-            name="dealOwnerId"
-            rules={[{ required: true }]}
-          >
-            <Select
-              placeholder="Please select user"
-              {...userSelectProps}
-              options={
-                userQueryResult.data?.data?.map((user) => ({
-                  value: user.id,
-                  label: (
-                    <SelectOptionWithAvatar
-                      name={user.name}
-                      avatarUrl={user.avatarUrl ?? undefined}
-                    />
-                  ),
-                })) ?? []
-              }
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
-      {children}
-    </>
-  );
+        {renderContactForm()}
+        <Row gutter={12}>
+          <Col span={12}>
+            <Form.Item label="Stage" name="stageId">
+              <Select
+                placeholder="Please select stage"
+                {...stageSelectProps}
+                showSearch={false}
+                options={stageSelectProps.options?.concat({
+                  label: "UNASSIGNED",
+                  value: null,
+                })}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              rules={[{ required: true }]}
+              label="Deal value"
+              name="value"
+            >
+              <InputNumber
+                min={0}
+                addonBefore={<DollarOutlined />}
+                placeholder="0,00"
+                formatter={(value) =>
+                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Form.Item
+          label="Deal owner"
+          name="dealOwnerId"
+          rules={[{ required: true }]}
+        >
+          <Select
+            placeholder="Please select user"
+            {...userSelectProps}
+            options={
+              userQueryResult.data?.data?.map((user) => ({
+                value: user.id,
+                label: (
+                  <SelectOptionWithAvatar
+                    name={user.name}
+                    avatarUrl={user.avatarUrl ?? undefined}
+                  />
+                ),
+              })) ?? []
+            }
+          />
+        </Form.Item>
+      </Form>
+    </Modal>
+    {children}
+  </>;
 };

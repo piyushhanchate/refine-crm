@@ -93,7 +93,8 @@ export const KanbanEditPage = () => {
           cancelForm={() => setActiveKey(undefined)}
         />
       </Accordion>
-      <Accordion
+      {/* TODO: re enable this once assign to users has been fixed */}
+      {/* <Accordion
         accordionKey="users"
         activeKey={activeKey}
         setActive={setActiveKey}
@@ -111,8 +112,8 @@ export const KanbanEditPage = () => {
           }}
           cancelForm={() => setActiveKey(undefined)}
         />
-      </Accordion>
-      <CheckListForm isLoading={isLoading} initialValues={{ checklist }} />
+      </Accordion> */}
+      {/* <CheckListForm isLoading={isLoading} initialValues={{ checklist }} /> */}
 
       <div
         style={{

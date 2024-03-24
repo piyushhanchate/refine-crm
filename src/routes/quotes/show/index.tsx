@@ -104,7 +104,8 @@ export const QuotesShowPage = () => {
           <div className={styles.divider} />
           <ProductsServices />
           <div className={styles.divider} />
-          <ShowDescription />
+          {/* TODO: This is the notes for a quote. re enable after adding table. */}
+          {/* <ShowDescription /> */}
         </div>
       </div>
       {visible && (

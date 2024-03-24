@@ -54,7 +54,7 @@ const columns = [
         formatter={(value) =>
           currencyNumber(Number(value || 0)).replace("$", "")
         }
-        addonBefore="$"
+        addonBefore="₹"
         {...props}
       />
     ),
@@ -129,12 +129,18 @@ export const ProductsServices = () => {
       enabled: true,
       debounce: 300,
       onFinish: (values) => {
+        console.log(values, "quotess")
         const items = (values.items || []).filter((item) => !!item?.title);
         items?.forEach((item) => {
           if ("totalPrice" in item) {
             delete (item as any).totalPrice;
           }
         });
+
+        console.log({
+          ...values,
+          items,
+        }, "itemzzz")
         return {
           ...values,
           items,
@@ -151,7 +157,7 @@ export const ProductsServices = () => {
 
   const { isLoading = false, isFetching = false, refetch } = queryResult ?? {};
 
-  const { total, subTotal, items } = queryResult?.data?.data ?? {};
+  const { total, subTotal, items, tax } = queryResult?.data?.data ?? {};
 
   return (
     <div
@@ -301,7 +307,8 @@ export const ProductsServices = () => {
 
       <TotalSection
         total={total || 0}
-        subTotal={subTotal || 0}
+        tax={tax || 0}
+        subTotal={subTotal || 100}
         isLoading={isLoading}
         isFetching={isFetching}
         taxFormOnMutationSuccess={() => refetch?.()}
@@ -313,12 +320,15 @@ export const ProductsServices = () => {
 const TotalSection = (props: {
   total: number;
   subTotal: number;
+  tax: number;
   isLoading: boolean;
   isFetching: boolean;
   taxFormOnMutationSuccess: () => void;
 }) => {
-  const { total, subTotal, isLoading, isFetching, taxFormOnMutationSuccess } =
+  const { total, subTotal, isLoading, isFetching, taxFormOnMutationSuccess, tax } =
     props;
+
+    const totalValue = subTotal * (1 + tax/100);
 
   return (
     <div
@@ -373,7 +383,7 @@ const TotalSection = (props: {
             }}
           >
             <div>
-              <Text size="sm">Sales tax</Text>
+              <Text size="sm">GST</Text>
             </div>
             <div
               style={{
@@ -398,7 +408,7 @@ const TotalSection = (props: {
               <Text size="sm">Total value</Text>
             </div>
             <div>
-              <Text size="sm">{currencyNumber(total || 0)}</Text>
+              <Text size="sm">{currencyNumber(totalValue  || 0)}</Text>
             </div>
           </div>
         </>

@@ -3,11 +3,13 @@ import graphqlDataProvider, {
   liveProvider as graphqlLiveProvider,
 } from "@refinedev/nestjs-query";
 
+// import graphqlDataProvider, { GraphQLClient, liveProvider as graphqlLiveProvider} from "@refinedev/hasura";
 import { createClient } from "graphql-ws";
 
 import { axiosInstance } from "./axios";
 
-export const API_BASE_URL = "https://api.crm.refine.dev";
+// export const API_BASE_URL = "https://api.crm.refine.dev";
+export const API_BASE_URL = "http://localhost:3000";
 export const API_URL = `${API_BASE_URL}/graphql`;
 export const WS_URL = "wss://api.crm.refine.dev/graphql";
 

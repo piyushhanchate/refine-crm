@@ -48,6 +48,10 @@ const PdfExport = () => {
     salesOwner,
   } = data?.data || {};
 
+   {/* TODO: Remove this and show total directly  */}
+  //@ts-ignore
+  const totalValueAfterPrice = subTotal * (1 + tax/100);
+
   const loading = isLoading || isFetching;
 
   const pdfOpenHandler = async () => {
@@ -194,7 +198,7 @@ const PdfExport = () => {
                   }}
                 >
                   <Text>Subtotal</Text>
-                  <Text>Sales tax</Text>
+                  <Text>GST</Text>
                   <Text>Total value</Text>
                 </View>
                 <View
@@ -205,7 +209,8 @@ const PdfExport = () => {
                 >
                   <Text>{currencyNumber(subTotal || 0)}</Text>
                   <Text>%{tax || 0}</Text>
-                  <Text>{currencyNumber(total || 0)}</Text>
+                  {/* TODO: change it back to showing the actual total here */}
+                  <Text>{currencyNumber(totalValueAfterPrice || 0)}</Text>
                 </View>
               </View>
               <View style={styles.divider} />

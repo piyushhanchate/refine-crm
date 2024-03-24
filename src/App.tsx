@@ -93,19 +93,20 @@ const App: React.FC = () => {
                   liveMode: "auto",
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
+                  projectId: "6LCrRZ-rknOAJ-y1IcMG"
                 }}
               >
                 <Routes>
                   <Route
                     element={
-                      <Authenticated
-                        key="authenticated-layout"
-                        fallback={<CatchAllNavigate to="/login" />}
-                      >
+                      // <Authenticated
+                      //   key="authenticated-layout"
+                      //   fallback={<CatchAllNavigate to="/login" />}
+                      // >
                         <Layout>
                           <Outlet />
                         </Layout>
-                      </Authenticated>
+                      // </Authenticated>
                     }
                   >
                     <Route index element={<DashboardPage />} />

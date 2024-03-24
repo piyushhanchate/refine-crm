@@ -8,8 +8,6 @@ import { disableAutoLogin, enableAutoLogin } from "@/hooks";
 
 import { API_BASE_URL, API_URL, client, dataProvider } from "./data";
 
-
-const userId = "peUwH5hXWihB2YvJKQ3j6Pevfzw2"
 export const emails = [
   "michael.scott@dundermifflin.com",
   "jim.halpert@dundermifflin.com",
@@ -36,50 +34,52 @@ export const demoCredentials = {
 };
 
 export const authProvider: AuthProvider = {
-  login: async ({ email, providerName, accessToken, refreshToken, password }) => {
-    
-   
-    // if (accessToken && refreshToken) {
-    //   client.setHeaders({
-    //     Authorization: `Bearer ${accessToken}`,
-    //   });
+  login: async ({ email, username, password, remember }) => {
 
-    //   localStorage.setItem("access_token", accessToken);
-    //   localStorage.setItem("refresh_token", refreshToken);
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-    //   return {
-    //     success: true,
-    //     redirectTo: "/",
-    //   };
-    // }
+    if (accessToken && refreshToken) {
+      client.setHeaders({
+        Authorization: `Bearer ${accessToken}`,
+      });
 
-    // if (providerName) {
-    //   window.location.href = `${API_BASE_URL}/auth/${providerName}`;
+      localStorage.setItem("access_token", accessToken);
+      localStorage.setItem("refresh_token", refreshToken);
 
-    //   return {
-    //     success: true,
-    //   };
-    // }
+      return {
+        success: true,
+        redirectTo: "/",
+      };
+    }
+
+    if (providerName) {
+      window.location.href = `${API_BASE_URL}/auth/${providerName}`;
+
+      return {
+        success: true,
+      };
+    }
 
     try {
-    //   const { data } = await dataProvider.custom({
-    //     url: API_URL,
-    //     method: "post",
-    //     headers: {},
-    //     meta: {
-    //       variables: { email },
-    //       rawQuery: `
-    //             mutation Login($email: String!) {
-    //                 login(loginInput: {
-    //                   email: $email
-    //                 }) {
-    //                   accessToken,
-    //                   refreshToken
-    //                 }
-    //               }
-    //             `,
-    //     },
-    //   });
+      const { data } = await dataProvider.custom({
+        url: API_URL,
+        method: "post",
+        headers: {},
+        meta: {
+          variables: { email },
+          rawQuery: `
+                mutation Login($email: String!) {
+                    login(loginInput: {
+                      email: $email
+                    }) {
+                      accessToken,
+                      refreshToken
+                    }
+                  }
+                `,
+        },
+      });
 
       // const data = {
       //   login: {
@@ -91,30 +91,19 @@ export const authProvider: AuthProvider = {
       // };
       // console.log("data", data);
 
-      // client.setHeaders({
-      //   Authorization: `Bearer ${data.login.accessToken}`,
-      // });
+      client.setHeaders({
+        Authorization: `Bearer ${data.login.accessToken}`,
+      });
 
 
-      // enableAutoLogin(email);
-      // localStorage.setItem("access_token", data.login.accessToken);
-      // localStorage.setItem("refresh_token", data.login.refreshToken);
+      enableAutoLogin(email);
+      localStorage.setItem("access_token", data.login.accessToken);
+      localStorage.setItem("refresh_token", data.login.refreshToken);
 
-      if (email=="info@docreativelabs.com" && password=="anandPass@321") {
-        client.setHeaders({
-          userId: `${userId}`,
-        });
-        localStorage.setItem("userId", userId);
-
-        return {
-          success: true,
-          redirectTo: "/",
-        };
-      }
-      else{
-        throw new Error("Invalid credentials");
-      }
-     
+      return {
+        success: true,
+        redirectTo: "/",
+      };
     } catch (error: any) {
       return {
         success: false,

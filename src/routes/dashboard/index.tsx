@@ -84,9 +84,9 @@ export const DashboardPage: React.FC = () => {
           marginTop: "32px",
         }}
       >
-        <Col xs={24} sm={24} xl={14} xxl={16}>
+        {/* <Col xs={24} sm={24} xl={14} xxl={16}>
           <DashboardLatestActivities />
-        </Col>
+        </Col> */}
         <Col xs={24} sm={24} xl={10} xxl={8}>
           <CalendarUpcomingEvents showGoToListButton />
         </Col>
@@ -108,7 +108,7 @@ export const DashboardPage: React.FC = () => {
         >
           <DashboardTasksChart />
         </Col>
-        <Col
+        {/* <Col
           xs={24}
           sm={24}
           xl={16}
@@ -117,7 +117,7 @@ export const DashboardPage: React.FC = () => {
           }}
         >
           <CompaniesMap />
-        </Col>
+        </Col> */}
       </Row>
     </div>
   );

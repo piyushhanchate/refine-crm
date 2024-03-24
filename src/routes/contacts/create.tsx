@@ -54,6 +54,7 @@ export const ContactCreatePage: React.FC<PropsWithChildren> = ({
           layout="vertical"
           {...formProps}
           onFinish={(values) => {
+            console.log(user, "finish")
             onFinish({
               ...values,
               salesOwnerId: user?.id,

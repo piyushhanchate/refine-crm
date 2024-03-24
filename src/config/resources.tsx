@@ -140,12 +140,12 @@ export const resources: IResourceItem[] = [
       parent: "administration",
     },
   },
-  {
-    name: "audits",
-    list: "/administration/audit-log",
-    meta: {
-      label: "Audit Log",
-      parent: "administration",
-    },
-  },
+  // {
+  //   name: "audits",
+  //   list: "/administration/audit-log",
+  //   meta: {
+  //     label: "Audit Log",
+  //     parent: "administration",
+  //   },
+  // },
 ];

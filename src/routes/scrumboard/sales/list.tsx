@@ -180,9 +180,10 @@ export const SalesPage: FC<PropsWithChildren> = ({ children }) => {
       {
         onSuccess: () => {
           const stage = event.over?.id as undefined | string | null;
-          if (stage === "won" || stage === "lost") {
-            edit("finalize-deals", dealId, "replace");
-          }
+          //TODO: undo this once you have added notes
+          // if (stage === "won" || stage === "lost") {
+          //   edit("finalize-deals", dealId, "replace");
+          // }
         },
       },
     );

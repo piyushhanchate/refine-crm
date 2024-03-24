@@ -27,6 +27,32 @@ export const KANBAN_UPDATE_STAGE_MUTATION = gql`
     }
 `;
 
+//TODO: createlist handle
+// export const KANBAN_GET_TASK_QUERY = gql`
+//     query KanbanGetTask($id: ID!) {
+//         task(id: $id) {
+//             id
+//             title
+//             completed
+//             description
+//             dueDate
+//             stage {
+//                 id
+//                 title
+//             }
+//             users {
+//                 id
+//                 name
+//                 avatarUrl
+//             }
+//             checklist {
+//                 title
+//                 checked
+//             }
+//         }
+//     }
+// `;
+
 export const KANBAN_GET_TASK_QUERY = gql`
     query KanbanGetTask($id: ID!) {
         task(id: $id) {
@@ -44,13 +70,37 @@ export const KANBAN_GET_TASK_QUERY = gql`
                 name
                 avatarUrl
             }
-            checklist {
-                title
-                checked
-            }
+         
         }
     }
 `;
+
+
+//TODO: createlist addition
+// export const KANBAN_UPDATE_TASK_MUTATION = gql`
+//     mutation KanbanUpdateTask($input: UpdateOneTaskInput!) {
+//         updateOneTask(input: $input) {
+//             id
+//             title
+//             completed
+//             description
+//             dueDate
+//             stage {
+//                 id
+//                 title
+//             }
+//             users {
+//                 id
+//                 name
+//                 avatarUrl
+//             }
+//             checklist {
+//                 title
+//                 checked
+//             }
+//         }
+//     }
+// `;
 
 export const KANBAN_UPDATE_TASK_MUTATION = gql`
     mutation KanbanUpdateTask($input: UpdateOneTaskInput!) {
@@ -69,10 +119,7 @@ export const KANBAN_UPDATE_TASK_MUTATION = gql`
                 name
                 avatarUrl
             }
-            checklist {
-                title
-                checked
-            }
+         
         }
     }
 `;
@@ -115,6 +162,40 @@ export const KANBAN_TASK_STAGES_QUERY = gql`
     }
 `;
 
+//TODO: add checklist
+// export const KANBAN_TASKS_QUERY = gql`
+//     query KanbanTasks(
+//         $filter: TaskFilter!
+//         $sorting: [TaskSort!]
+//         $paging: OffsetPaging!
+//     ) {
+//         tasks(filter: $filter, sorting: $sorting, paging: $paging) {
+//             nodes {
+//                 id
+//                 title
+//                 description
+//                 dueDate
+//                 completed
+//                 stageId
+//                 checklist {
+//                     title
+//                     checked
+//                 }
+//                 users {
+//                     id
+//                     name
+//                     avatarUrl
+//                 }
+//                 comments {
+//                     totalCount
+//                 }
+//             }
+//             totalCount
+//         }
+//     }
+// `;
+
+
 export const KANBAN_TASKS_QUERY = gql`
     query KanbanTasks(
         $filter: TaskFilter!
@@ -129,10 +210,7 @@ export const KANBAN_TASKS_QUERY = gql`
                 dueDate
                 completed
                 stageId
-                checklist {
-                    title
-                    checked
-                }
+        
                 users {
                     id
                     name
