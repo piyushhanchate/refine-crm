@@ -12,7 +12,7 @@ import { axiosInstance } from "./axios";
 //TODO: change this for production
 export const API_BASE_URL = "https://geniex-crm-prod-production.up.railway.app";
 export const API_URL = `${API_BASE_URL}/graphql`;
-export const WS_URL = "wss://api.crm.refine.dev/graphql";
+export const WS_URL = "wss://geniex-crm-prod-production.up.railway.app/graphql";
 
 export const client = new GraphQLClient(API_URL, {
   fetch: async (url: string, options: any) => {
