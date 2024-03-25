@@ -113,7 +113,7 @@ export const KanbanEditPage = () => {
           cancelForm={() => setActiveKey(undefined)}
         />
       </Accordion> */}
-      {/* <CheckListForm isLoading={isLoading} initialValues={{ checklist }} /> */}
+      <CheckListForm isLoading={isLoading} initialValues={{ checklist }} />
 
       <div
         style={{

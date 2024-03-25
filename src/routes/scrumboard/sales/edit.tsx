@@ -97,14 +97,15 @@ export const SalesEditPage = () => {
       }));
 
       return (
+        // REFINE_BUG: this field had a trigger:"" prop, which was causing contacts not to be updated 
         <Form.Item
           label="Deal contact"
           name={["dealContactId"]}
-          trigger=""
           rules={[{ required: true }]}
           initialValue={deal?.dealContact?.id}
           dependencies={["companyId"]}
           preserve={false}
+        
         >
           <Select {...contactSelectProps} options={options} />
         </Form.Item>
