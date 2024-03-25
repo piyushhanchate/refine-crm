@@ -336,8 +336,8 @@ export const ContactShowPage: React.FC = () => {
         <div className={styles.stage}>
           <ContactStatus contact={data.data} />
         </div>
-
-        <Card
+{/* TODO: re enable after adding notes */}
+        {/* <Card
           title={
             <>
               <TextIcon />
@@ -349,7 +349,7 @@ export const ContactShowPage: React.FC = () => {
           }}
         >
           <ContactComment />
-        </Card>
+        </Card> */}
 
         <div className={styles.actions}>
           <Text className="ant-text tertiary">

@@ -40,7 +40,8 @@ export const CurrentUser: React.FC = () => {
           gap: "4px",
         }}
       >
-        <Button
+        {/* TODO: undo when account settings fixed */}
+        {/* <Button
           style={{ textAlign: "left" }}
           icon={<SettingOutlined />}
           type="text"
@@ -48,7 +49,7 @@ export const CurrentUser: React.FC = () => {
           onClick={() => setOpened(true)}
         >
           Account settings
-        </Button>
+        </Button> */}
         <Button
           style={{ textAlign: "left" }}
           icon={<LogoutOutlined />}
