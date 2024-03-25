@@ -1,5 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
+import { auth } from "@/firebase-config/initialise";
+
 import { refreshTokens, shouldRefreshToken } from "./refresh-token";
 
 export const axiosInstance = axios.create({
@@ -11,14 +13,15 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const userId = localStorage.getItem("userId");
-    // const accessToken = localStorage.getItem("access_token");
-    // if (accessToken && config?.headers) {
-    //   config.headers.Authorization = `Bearer ${accessToken}`;
-    // }
-    if (userId) {
-      config.headers.userId = userId;
+    const user = auth.currentUser;
+    if (user) {
+      const idToken = await user.getIdToken();
+      if (idToken) {
+        config.headers.Authorization = `Bearer ${idToken}`;
+      }
     }
+ 
+  
     return config;
   },
   (error) => {
@@ -38,9 +41,12 @@ axiosInstance.interceptors.response.use(
 
     if (errors) {
       if (shouldRefreshToken(response) && !originalRequest?._retry) {
-        const tokens = await refreshTokens();
-        if (!tokens) throw errors;
-
+        // const tokens = await refreshTokens();
+        // if (!tokens) throw errors;
+        const user = auth.currentUser;
+        const idToken = await user.getIdToken();
+            if (!idToken || !user) throw errors;
+            
         originalRequest._retry = true;
         return axiosInstance(originalRequest);
       }

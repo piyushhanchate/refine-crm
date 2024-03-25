@@ -99,14 +99,15 @@ const App: React.FC = () => {
                 <Routes>
                   <Route
                     element={
-                      // <Authenticated
-                      //   key="authenticated-layout"
-                      //   fallback={<CatchAllNavigate to="/login" />}
-                      // >
+                      // TODO: this was changed for firebase authentication; change back if not working
+                      <Authenticated
+                        key="authenticated-layout"
+                        fallback={<CatchAllNavigate to="/login" />}
+                      >
                         <Layout>
                           <Outlet />
                         </Layout>
-                      // </Authenticated>
+                      </Authenticated>
                     }
                   >
                     <Route index element={<DashboardPage />} />

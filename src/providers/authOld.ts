@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { AuthProvider } from "@refinedev/core";
 
 import { createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "firebase/auth";
@@ -9,6 +8,8 @@ import { disableAutoLogin, enableAutoLogin } from "@/hooks";
 
 import { API_BASE_URL, API_URL, client, dataProvider } from "./data";
 
+
+const userId = "peUwH5hXWihB2YvJKQ3j6Pevfzw2"
 export const emails = [
   "michael.scott@dundermifflin.com",
   "jim.halpert@dundermifflin.com",
@@ -35,52 +36,50 @@ export const demoCredentials = {
 };
 
 export const authProvider: AuthProvider = {
-  login: async ({ email, username, password, remember }) => {
+  login: async ({ email, providerName, accessToken, refreshToken, password }) => {
+    
+   
+    // if (accessToken && refreshToken) {
+    //   client.setHeaders({
+    //     Authorization: `Bearer ${accessToken}`,
+    //   });
 
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+    //   localStorage.setItem("access_token", accessToken);
+    //   localStorage.setItem("refresh_token", refreshToken);
 
-    if (accessToken && refreshToken) {
-      client.setHeaders({
-        Authorization: `Bearer ${accessToken}`,
-      });
+    //   return {
+    //     success: true,
+    //     redirectTo: "/",
+    //   };
+    // }
 
-      localStorage.setItem("access_token", accessToken);
-      localStorage.setItem("refresh_token", refreshToken);
+    // if (providerName) {
+    //   window.location.href = `${API_BASE_URL}/auth/${providerName}`;
 
-      return {
-        success: true,
-        redirectTo: "/",
-      };
-    }
-
-    if (providerName) {
-      window.location.href = `${API_BASE_URL}/auth/${providerName}`;
-
-      return {
-        success: true,
-      };
-    }
+    //   return {
+    //     success: true,
+    //   };
+    // }
 
     try {
-      const { data } = await dataProvider.custom({
-        url: API_URL,
-        method: "post",
-        headers: {},
-        meta: {
-          variables: { email },
-          rawQuery: `
-                mutation Login($email: String!) {
-                    login(loginInput: {
-                      email: $email
-                    }) {
-                      accessToken,
-                      refreshToken
-                    }
-                  }
-                `,
-        },
-      });
+    //   const { data } = await dataProvider.custom({
+    //     url: API_URL,
+    //     method: "post",
+    //     headers: {},
+    //     meta: {
+    //       variables: { email },
+    //       rawQuery: `
+    //             mutation Login($email: String!) {
+    //                 login(loginInput: {
+    //                   email: $email
+    //                 }) {
+    //                   accessToken,
+    //                   refreshToken
+    //                 }
+    //               }
+    //             `,
+    //     },
+    //   });
 
       // const data = {
       //   login: {
@@ -92,19 +91,30 @@ export const authProvider: AuthProvider = {
       // };
       // console.log("data", data);
 
-      client.setHeaders({
-        Authorization: `Bearer ${data.login.accessToken}`,
-      });
+      // client.setHeaders({
+      //   Authorization: `Bearer ${data.login.accessToken}`,
+      // });
 
 
-      enableAutoLogin(email);
-      localStorage.setItem("access_token", data.login.accessToken);
-      localStorage.setItem("refresh_token", data.login.refreshToken);
+      // enableAutoLogin(email);
+      // localStorage.setItem("access_token", data.login.accessToken);
+      // localStorage.setItem("refresh_token", data.login.refreshToken);
 
-      return {
-        success: true,
-        redirectTo: "/",
-      };
+      if (email=="info@docreativelabs.com" && password=="anandPass@321") {
+        client.setHeaders({
+          userId: `${userId}`,
+        });
+        localStorage.setItem("userId", userId);
+
+        return {
+          success: true,
+          redirectTo: "/",
+        };
+      }
+      else{
+        throw new Error("Invalid credentials");
+      }
+     
     } catch (error: any) {
       return {
         success: false,
@@ -241,12 +251,13 @@ const email = "omg2@gmail.com";
       //           `,
       //   },
       // });
+      //TODO: change all of this once auth implemented
       const me = {
-        id: "3",
-        name: "John Doe",
-        email: "john@doe.com",
-        phone: "+1-202-555-0121",
-        jobTitle: "Software Engineer",
+        id: userId,
+        name: "Anand Akalwadi",
+        email: "info@docreativelabs.com",
+        phone: "+919611041920",
+        jobTitle: "Director",
         timezone: "America/New_York",
         avatarUrl: null
       }

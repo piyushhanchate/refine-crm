@@ -16,6 +16,8 @@ export const CurrentUser: React.FC = () => {
   const { data: user } = useGetIdentity<User>();
   const { mutate: logout } = useLogout();
 
+  console.log(user, "user info");
+
   const content = (
     <div
       style={{
@@ -41,7 +43,7 @@ export const CurrentUser: React.FC = () => {
         }}
       >
         {/* TODO: undo when account settings fixed */}
-        {/* <Button
+        <Button
           style={{ textAlign: "left" }}
           icon={<SettingOutlined />}
           type="text"
@@ -49,7 +51,7 @@ export const CurrentUser: React.FC = () => {
           onClick={() => setOpened(true)}
         >
           Account settings
-        </Button> */}
+        </Button>
         <Button
           style={{ textAlign: "left" }}
           icon={<LogoutOutlined />}
