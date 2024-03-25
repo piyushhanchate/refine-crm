@@ -251,12 +251,13 @@ const email = "omg2@gmail.com";
       //           `,
       //   },
       // });
+      //TODO: change all of this once auth implemented
       const me = {
         id: userId,
-        name: "John Doe",
-        email: "john@doe.com",
-        phone: "+1-202-555-0121",
-        jobTitle: "Software Engineer",
+        name: "Anand Akalwadi",
+        email: "info@docreativelabs.com",
+        phone: "+919611041920",
+        jobTitle: "Director",
         timezone: "America/New_York",
         avatarUrl: null
       }

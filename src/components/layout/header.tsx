@@ -29,7 +29,8 @@ export const Header: React.FC = () => {
     <Layout.Header style={headerStyles}>
       {searchClient ? <AlgoliaSearch /> : null}
       <Space align="center" size="middle">
-        <Notifications />
+        {/* TODO: undo when notifications are enabled */}
+        {/* <Notifications /> */}
         <CurrentUser />
       </Space>
     </Layout.Header>
