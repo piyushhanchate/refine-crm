@@ -1,15 +1,20 @@
 import { AuthProvider } from "@refinedev/core";
 
-import { createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 
-import {auth} from "@/firebase-config/initialise"
+import { auth } from "@/firebase-config/initialise";
 import type { User } from "@/graphql/schema.types";
 import { disableAutoLogin, enableAutoLogin } from "@/hooks";
 
 import { API_BASE_URL, API_URL, client, dataProvider } from "./data";
 
-
-const userId = "kdmNE9H5imZ1mA7RN3WLiIU6EK93"
 export const emails = [
   "michael.scott@dundermifflin.com",
   "jim.halpert@dundermifflin.com",
@@ -36,85 +41,30 @@ export const demoCredentials = {
 };
 
 export const authProvider: AuthProvider = {
-  login: async ({ email, providerName, accessToken, refreshToken, password }) => {
-    
-   
-    // if (accessToken && refreshToken) {
-    //   client.setHeaders({
-    //     Authorization: `Bearer ${accessToken}`,
-    //   });
-
-    //   localStorage.setItem("access_token", accessToken);
-    //   localStorage.setItem("refresh_token", refreshToken);
-
-    //   return {
-    //     success: true,
-    //     redirectTo: "/",
-    //   };
-    // }
-
-    // if (providerName) {
-    //   window.location.href = `${API_BASE_URL}/auth/${providerName}`;
-
-    //   return {
-    //     success: true,
-    //   };
-    // }
-
+  login: async ({ email, username, password, remember }) => {
     try {
-    //   const { data } = await dataProvider.custom({
-    //     url: API_URL,
-    //     method: "post",
-    //     headers: {},
-    //     meta: {
-    //       variables: { email },
-    //       rawQuery: `
-    //             mutation Login($email: String!) {
-    //                 login(loginInput: {
-    //                   email: $email
-    //                 }) {
-    //                   accessToken,
-    //                   refreshToken
-    //                 }
-    //               }
-    //             `,
-    //     },
-    //   });
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      // const idToken = await user.getIdToken();
 
-      // const data = {
-      //   login: {
-      //     accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgsImVtYWlsIjoicGh5bGxpcy5zbWl0aEBkdW5kZXJtaWZmbGluLmNvbSIsImlhdCI6MTcxMDkzNjY1OSwiZXhwIjoxNzExMTk1ODU5fQ.rT94vWHIEFEKZYMzok4qks29bMG9SrSXnTXw0Aghdbc"
-      //     ,
-      //     refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgsImVtYWlsIjoicGh5bGxpcy5zbWl0aEBkdW5kZXJtaWZmbGluLmNvbSIsImlhdCI6MTcxMDkzNjY1OSwiZXhwIjoxNzExMTk1ODU5fQ.rT94vWHIEFEKZYMzok4qks29bMG9SrSXnTXw0Aghdbc"
-      //     ,
-      //   },
-      // };
-      // console.log("data", data);
-
-      // client.setHeaders({
-      //   Authorization: `Bearer ${data.login.accessToken}`,
-      // });
-
-
-      // enableAutoLogin(email);
-      // localStorage.setItem("access_token", data.login.accessToken);
-      // localStorage.setItem("refresh_token", data.login.refreshToken);
-
-      if (email=="info@docreativelabs.com" && password=="anandPass@321") {
-        client.setHeaders({
-          userId: `${userId}`,
-        });
-        localStorage.setItem("userId", userId);
-
+      if (user) {
+        console.log(user, "user logged in")
         return {
           success: true,
           redirectTo: "/",
         };
       }
-      else{
-        throw new Error("Invalid credentials");
-      }
-     
+      return {
+        success: false,
+        error: {
+          message:  "Login failed",
+          name:  "Please try again",
+        },
+      };
     } catch (error: any) {
       return {
         success: false,
@@ -125,25 +75,31 @@ export const authProvider: AuthProvider = {
       };
     }
   },
-  register: async ({ email, password }) => {
+  register: async ({ email, password, role, name, title }) => {
     try {
-      // const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       // // await sendEmailVerification(userCredential.user);
-      // const user = userCredential.user;
-const id = "peUwH5hXWihB2YvJKQ3j6Pevfzw2";
+      const user = userCredential.user;
+      const id = user.uid;
 
-const email = "omg2@gmail.com";
       await dataProvider.custom({
         url: API_URL,
         method: "post",
         headers: {},
         meta: {
-          variables: { id: id, email: email },
+          variables: { id: id, email, role, name, title },
           rawQuery: `
-                mutation register($email: String!, $id: String!) {
+                mutation register($email: String!, $id: String!, $role: String, $name: String, $title: String ) {
                     register(registerInput: {
                       email: $email
                         id: $id
+                        role: $role
+                        title: $title
+                        name: $name
                     }) {
                         email
                     }
@@ -154,9 +110,13 @@ const email = "omg2@gmail.com";
 
       // enableAutoLogin(email);
 
+      // return {
+      //   success: true,
+      //   redirectTo: `/login?email=${email}`,
+      // };
       return {
         success: true,
-        redirectTo: `/login?email=${email}`,
+        redirectTo: `/`,
       };
     } catch (error: any) {
       return {
@@ -172,10 +132,8 @@ const email = "omg2@gmail.com";
     client.setHeaders({
       Authorization: "",
     });
-
-    disableAutoLogin();
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
+    await signOut(auth);
+    console.log("logged out")
 
     return {
       success: true,
@@ -193,23 +151,33 @@ const email = "omg2@gmail.com";
   },
   check: async () => {
     try {
-      await dataProvider.custom({
-        url: API_URL,
-        method: "post",
-        headers: {},
-        meta: {
-          rawQuery: `
-                    query Me {
-                        me {
-                          name
-                        }
-                      }
-                `,
-        },
-      });
+      async function getCurrentUser() {
+        return new Promise((resolve, reject) => {
+           const unsubscribe = onAuthStateChanged(auth, user => {
+        if (user) {
+          resolve(user);
+        }
+        else{
+          resolve(null)
+        }
+              unsubscribe();
+           }, reject);
+        });
+      }
 
+      const user = await getCurrentUser()
+     
+    // const user = auth.currentUser;
+    //   console.log(user, "checking loggedin")
+      if (user) {
+        return {
+          authenticated: true,
+        };
+      }
       return {
-        authenticated: true,
+        authenticated: false,
+        logout: true,
+        redirectTo: "/login",
       };
     } catch (error) {
       return {
@@ -217,11 +185,22 @@ const email = "omg2@gmail.com";
       };
     }
   },
-  forgotPassword: async () => {
-    return {
-      success: true,
-      redirectTo: "/update-password",
-    };
+  forgotPassword: async ({ email }) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      return {
+        success: true,
+        redirectTo: "/login",
+      };
+    } catch {
+      return {
+        success: false,
+        error: {
+          name: "Forgot Password Error",
+          message: "Email address does not exist",
+        },
+      };
+    }
   },
   updatePassword: async () => {
     return {
@@ -231,38 +210,35 @@ const email = "omg2@gmail.com";
   },
   getIdentity: async () => {
     try {
-      // const { data } = await dataProvider.custom<{ me: User }>({
-      //   url: API_URL,
-      //   method: "post",
-      //   headers: {},
-      //   meta: {
-      //     rawQuery: `
-      //               query Me {
-      //                   me {
-      //                       id,
-      //                       name,
-      //                       email,
-      //                       phone,
-      //                       jobTitle,
-      //                       timezone
-      //                       avatarUrl
-      //                   }
-      //                 }
-      //           `,
-      //   },
-      // });
-      //TODO: change all of this once auth implemented
-      const me = {
-        id: userId,
-        name: "Anand Akalwadi",
-        email: "info@docreativelabs.com",
-        phone: "+919611041920",
-        jobTitle: "Director",
-        timezone: "America/New_York",
-        avatarUrl: null
+      const user = auth.currentUser;
+      if (user) {
+        console.log(user, "identity user")
+        const { data } = await dataProvider.custom<{ me: User }>({
+          url: API_URL,
+          method: "post",
+          headers: {},
+          meta: {
+            rawQuery: `
+                query Me {
+                    me {
+                        id,
+                        name,
+                        email,
+                        phone,
+                        jobTitle,
+                        timezone
+                        avatarUrl
+                    }
+                  }
+            `,
+          },
+        });
+
+        console.log(data.me, "identity of user")
+        return data.me;
       }
-      // return data.me;
-      return me;
+
+    
     } catch (error) {
       return undefined;
     }

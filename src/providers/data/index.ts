@@ -10,7 +10,8 @@ import { axiosInstance } from "./axios";
 
 // export const API_BASE_URL = "https://api.crm.refine.dev";
 //TODO: change this for production
-export const API_BASE_URL = "https://geniex-crm-prod-production.up.railway.app";
+export const API_BASE_URL = "http://localhost:3000"
+// export const API_BASE_URL = "https://geniex-crm-prod-production.up.railway.app";
 export const API_URL = `${API_BASE_URL}/graphql`;
 export const WS_URL = "wss://geniex-crm-prod-production.up.railway.app/graphql";
 
