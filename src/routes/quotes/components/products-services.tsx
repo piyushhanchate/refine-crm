@@ -308,7 +308,7 @@ export const ProductsServices = () => {
       <TotalSection
         total={total || 0}
         tax={tax || 0}
-        subTotal={subTotal || 100}
+        subTotal={subTotal || 0}
         isLoading={isLoading}
         isFetching={isFetching}
         taxFormOnMutationSuccess={() => refetch?.()}
