@@ -23,8 +23,8 @@ export function RegisterPage() {
 
   return (
     <Row justify="center" style={{margin: "2em"}}> {/* Center the content horizontally */}
-    <Col xs={24} sm={12} md={8} lg={6}> {/* Adjust size for different screen sizes */}
-      <div style={{ backgroundColor: '#fff', borderRadius: 8, padding: 20, boxShadow: "2px 2px gray" }}> {/* Box styling */}
+    <Col xs={24} sm={12} md={8} > {/* Adjust size for different screen sizes */}
+      <div style={{ backgroundColor: '#fff', borderRadius: 8, padding: 20, boxShadow: "2px 2px 2px 2px gray" }}> {/* Box styling */}
    
       <Typography.Title level={3}>Register</Typography.Title>
     <Form layout="vertical" onFinish={onSubmit} form={form}>
